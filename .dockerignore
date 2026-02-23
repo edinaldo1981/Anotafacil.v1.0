@@ -1,0 +1,20 @@
+# Git
+.git
+.gitignore
+
+# Docs
+docs/
+*.md
+README.md
+
+# Dev
+node_modules/
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

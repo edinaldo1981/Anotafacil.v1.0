@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  anota-facil:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: anota-facil
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - TZ=America/Belem
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  # ─── Watchtower: atualiza o container automaticamente ──────
+  # Opcional — remova este bloco se não quiser auto-update
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 86400 --cleanup
+    environment:
+      - TZ=America/Belem
+
+networks:
+  default:
+    name: anota-facil-network
